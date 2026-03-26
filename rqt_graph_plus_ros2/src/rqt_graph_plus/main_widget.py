@@ -11,6 +11,8 @@ from .styles import APP_STYLE
 from .graph_model import GraphSnapshot
 from .graph_view import GraphView
 from .info_provider import get_node_info_text, get_topic_info_text
+from .ros_env import is_ros2
+import subprocess
 
 class MainWidget(QWidget):
     def __init__(self):
@@ -167,20 +169,29 @@ class MainWidget(QWidget):
             self.info_box.setPlainText(get_topic_info_text(name, self.snapshot))
 
     def _run_echo(self, topic_name):
-        self.info_box.setPlainText("Launching rostopic echo for\n{}".format(topic_name))
+        if is_ros2():
+            cmd_str = f"ros2 topic echo {topic_name}"
+        else:
+            cmd_str = f"rostopic echo {topic_name}"
+
+        self.info_box.setPlainText(f"Launching echo for\n{topic_name}")
+
         cmds = [
-            ["x-terminal-emulator", "-e", "bash", "-lc", "rostopic echo {}".format(topic_name)],
-            ["gnome-terminal", "--", "bash", "-lc", "rostopic echo {}; exec bash".format(topic_name)],
-            ["xterm", "-e", "bash", "-lc", "rostopic echo {}; exec bash".format(topic_name)],
+            ["x-terminal-emulator", "-e", "bash", "-lc", cmd_str],
+            ["gnome-terminal", "--", "bash", "-lc", cmd_str + "; exec bash"],
+            ["xterm", "-e", "bash", "-lc", cmd_str + "; exec bash"],
         ]
+
         for cmd in cmds:
             try:
                 subprocess.Popen(cmd)
                 return
             except Exception:
                 pass
-        self.info_box.setPlainText("Could not launch terminal.\n\nRun manually:\nrostopic echo {}".format(topic_name))
 
+        self.info_box.setPlainText(
+            f"Could not launch terminal.\n\nRun manually:\n{cmd_str}"
+        )
     def _hide_item(self, item_kind, name):
         if item_kind == "node":
             self.hidden_nodes.add(name)
