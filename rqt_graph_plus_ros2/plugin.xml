@@ -1,0 +1,10 @@
+<library path="src">
+  <class name="rqt_graph_plus_ros2/GraphPlus"
+         type="rqt_graph_plus.plugin.GraphPlus"
+         base_class_type="rqt_gui_py::Plugin">
+    <description>Enhanced ROS2 graph viewer.</description>
+    <qtgui>
+      <label>rqt_graph_plus</label>
+    </qtgui>
+  </class>
+</library>
