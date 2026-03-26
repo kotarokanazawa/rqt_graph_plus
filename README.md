@@ -1,71 +1,93 @@
-# rqt_graph_plus multi-ROS
+# rqt_graph_plus
 
-ROS1 と ROS2 を同じ zip にまとめた版です。  
-中には次の2パッケージが入っています。
+Enhanced rqt_graph for both ROS1 and ROS2
 
-- `rqt_graph_plus_ros1`
-- `rqt_graph_plus_ros2`
+---
 
-## 置き方
+## Installation
 
-この zip を **workspace の `src/` に展開**します。
-
-```bash
-cd ~/ws/src
-unzip rqt_graph_plus_multi_ros.zip
-```
-
-展開後の構成:
-
+### Directory Structure
 ```text
-src/
-  rqt_graph_plus_multi_ros/
-    rqt_graph_plus_ros1/
-    rqt_graph_plus_ros2/
-    build_rqt_graph_plus.sh
-    run_rqt_graph_plus.sh
+your_ws/
+  src/
+    rqt_graph_plus/
+      rqt_graph_plus_ros1/
+      rqt_graph_plus_ros2/
+      build_rqt_graph_plus.sh
+      run_rqt_graph_plus.sh
 ```
 
-## いちばん簡単な使い方
+---
 
-### ROS1
+### Common Steps (ROS1 / ROS2)
+
 ```bash
-source /opt/ros/noetic/setup.bash
-cd ~/imax_ws/src/rqt_graph_plus_multi_ros
+source /opt/ros/<your_ros>/setup.bash
+cd ~/your_ws/src
+git clone this repository
+cd rqt_graph_plus
 ./build_rqt_graph_plus.sh
 ./run_rqt_graph_plus.sh
 ```
 
-### ROS2
+* noetic (ROS1)
+* humble (ROS2)
+
+---
+
+## Alias (Recommended)
+
 ```bash
-source /opt/ros/humble/setup.bash
-cd ~/ws/src/rqt_graph_plus_multi_ros
-./build_rqt_graph_plus.sh
-./run_rqt_graph_plus.sh
+echo 'alias rqt_graph_plus="cd ~/your_ws/src/rqt_graph_plus && ./run_rqt_graph_plus.sh"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-## 手動でビルドする場合
+Then simply run:
 
-### ROS1
 ```bash
-source /opt/ros/noetic/setup.bash
-cd ~/imax_ws
-catkin build rqt_graph_plus_ros1
-source devel/setup.bash
-rosrun rqt_graph_plus_ros1 rqt_graph_plus
+rqt_graph_plus
 ```
 
-### ROS2
-```bash
-source /opt/ros/humble/setup.bash
-cd ~/ws
-colcon build --packages-select rqt_graph_plus_ros2 --symlink-install
-source install/setup.bash
-ros2 run rqt_graph_plus_ros2 rqt_graph_plus
-```
+---
 
-## メモ
+## Controls
 
-- 自動切替は `ROS_VERSION` を見て行います。
-- ROS1/ROS2 でビルドツールの仕様が違うため、**完全に1つの package.xml にはしていません**。
-- その代わり、**1つの zip / 1つの共通コード系統 / 2つの薄い wrapper package** にしています。
+* Left Click  
+  Select node / topic (connected elements are highlighted)
+
+* Double Click  
+  Zoom to highlighted nodes / topics
+
+* Drag  
+  Move node / topic
+
+* Drag namespace box  
+  Move grouped elements together
+
+* Middle Click  
+  Pan view
+
+* Mouse Wheel  
+  Zoom in / out
+
+* Right Click  
+  Info / Echo / Hide
+
+---
+
+## Features
+
+* Real-time communication graph visualization
+* Node-only mode (with direction indicators)
+
+  * ● publisher / ○ subscriber
+* Namespace grouping and batch manipulation
+* Display filters
+
+  * `/clock`
+  * `/rosout`
+  * rviz-related
+  * floating nodes
+* Automatic layout (no overlap)
+* Manual layout persistence
+
