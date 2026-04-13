@@ -6,3 +6,4 @@ logs/
 .vscode/
 rqt_graph_plus_ros1/src/rqt_graph_plus/__pycache__/
 rqt_graph_plus_ros2/src/rqt_graph_plus/__pycache__/
+rqt_graph_plus_ros2/CATKIN_IGNORE
